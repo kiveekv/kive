@@ -2026,7 +2026,10 @@ if(/[?&]h(=|&|$)/.test(location.search)){
  }
  function applyNotices(d){
    const root=document.querySelector('.kive-notice');if(!root||!Array.isArray(d.notices))return;
-   const intro=document.querySelector('.kive-notice-intro');if(intro&&d.noticesIntro!=null)intro.textContent=d.noticesIntro;
+   // 관리자 JSON이 비어 있으면 기존 페이지의 정상 공지 내용을 그대로 유지합니다.
+   const hasNoticeContent=d.notices.some(n=>String(n.title||'').trim()||(Array.isArray(n.lines)&&n.lines.some(line=>String(line||'').trim())));
+   if(!hasNoticeContent)return;
+   const intro=document.querySelector('.kive-notice-intro');if(intro&&String(d.noticesIntro||'').trim())intro.textContent=d.noticesIntro;
    root.innerHTML='';
    d.notices.forEach(n=>{
      const det=document.createElement('details');det.style.cssText='position:relative;border-bottom:1px solid #E8DDE1;';
@@ -2055,11 +2058,18 @@ if(/[?&]h(=|&|$)/.test(location.search)){
  }
  function applyPrices(d){
    const wrap=document.querySelector('.kive-price-options');if(!wrap||!d.prices)return;
+   // 초기 site-data.json의 옵션명이 비어 있으면 기존 가격표를 유지합니다.
+   // 옵션명을 입력한 뒤에만 관리자 설정으로 가격표를 교체합니다.
+   const baseItems=Array.isArray(d.prices.base)?d.prices.base:[];
+   const extraItems=Array.isArray(d.prices.extra)?d.prices.extra:[];
+   if(!baseItems.length||!extraItems.length||
+      baseItems.some(item=>!String(item.label||'').trim())||
+      extraItems.some(item=>!String(item.label||'').trim()))return;
    const groups=wrap.querySelectorAll('.kive-price-group');
    const render=(group,items,type)=>{
      if(!group)return;
      const title=group.querySelector('.kive-price-group-title');const titleText=title?title.textContent:'';
-     group.querySelectorAll('.kive-price-row').forEach(x=>x.remove());
+     group.querySelectorAll('.kive-price-row,.kive-price-note').forEach(x=>x.remove());
      (items||[]).forEach((item,idx)=>{
        const label=document.createElement('label');label.className='kive-price-row';label.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #F0EAEC;';
        const span=document.createElement('span');span.className='kive-price-label';span.style.cssText='display:flex;align-items:center;gap:9px;color:#40363A;font-size:12px;';
@@ -2084,7 +2094,7 @@ if(/[?&]h(=|&|$)/.test(location.search)){
  }
  function applyForm(d){
    const map={nickname:'kiveNickname',channel:'kiveChannel',type:'kiveType',deadline:'kiveDeadline',portfolioDate:'kivePortfolioDate',mood:'kiveMood',text:'kiveText',extraRequest:'kiveExtraRequest'};
-   Object.keys(map).forEach(k=>{const item=(d.formLabels||{})[k],el=document.getElementById(map[k]);if(!item||!el)return;const field=el.closest('.kive-form-field')||el.parentElement.parentElement;const label=field&&field.querySelector('label');if(label&&item.label)label.textContent=item.label;if(item.placeholder!=null){el.setAttribute('data-placeholder',item.placeholder);if('placeholder'in el)el.placeholder=item.placeholder;if(el.value===el.defaultValue)el.value=item.placeholder;if(el.isContentEditable&&(!el.textContent.trim()||el.textContent.trim()===el.dataset.placeholder))el.textContent=item.placeholder;}});
+   Object.keys(map).forEach(k=>{const item=(d.formLabels||{})[k],el=document.getElementById(map[k]);if(!item||!el)return;const field=el.closest('.kive-form-field')||el.parentElement.parentElement;const label=field&&field.querySelector('label');if(label&&String(item.label||'').trim())label.textContent=item.label;if(String(item.placeholder||'').trim()){el.setAttribute('data-placeholder',item.placeholder);if('placeholder'in el)el.placeholder=item.placeholder;if(el.value===el.defaultValue)el.value=item.placeholder;if(el.isContentEditable&&(!el.textContent.trim()||el.textContent.trim()===el.dataset.placeholder))el.textContent=item.placeholder;}});
  }
  fetch(BASE+'site-data.json?v='+Date.now()).then(r=>{if(!r.ok)throw new Error('config');return r.json()}).then(d=>{applyPortfolio(d);applyNotices(d);applySchedule(d);applyPrices(d);applyForm(d);}).catch(()=>console.info('KIVE 설정 파일이 아직 연결되지 않았습니다. 기본 페이지를 표시합니다.'));
 })();
