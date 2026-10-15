@@ -47,6 +47,49 @@ body.painting #stage .kive-day *{pointer-events:none}body.painting #stage .kive-
 #toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:9600;background:var(--ui-bg);color:#fff;padding:10px 16px;border-radius:999px;font:700 13px "Noto Sans KR",sans-serif;opacity:0;pointer-events:none;transition:opacity .2s;max-width:92%;text-align:center}
 #toast.show{opacity:1}
 </style>
+
+<style id="kive-desktop-font-adjustment">
+/* Desktop: improve readability of detailed content without changing mobile sizing or main headings. */
+@media (min-width: 769px) {
+  #stage .kive-page { font-size: 16px !important; }
+  #stage .kive-page .kive-notice-content,
+  #stage .kive-page .kive-notice-intro,
+  #stage .kive-page .kive-price-label,
+  #stage .kive-page .kive-price-note,
+  #stage .kive-page .kive-process-name,
+  #stage .kive-page .kive-guide-item,
+  #stage .kive-page .kive-label,
+  #stage .kive-page .kive-result-row,
+  #stage .kive-page .kive-portfolio-tab { font-size: 15px !important; }
+  #stage .kive-page .kive-price-number,
+  #stage .kive-page .kive-result-label { font-size: 16px !important; }
+  #stage .kive-page .kive-input,
+  #stage .kive-page .kive-longinput { font-size: 16px !important; }
+  #stage .kive-page .kive-day-num { font-size: 14px !important; }
+  #stage .kive-page .kive-week { font-size: 12px !important; }
+}
+</style>
+<style id="kive-mobile-form-fixes">
+@media (max-width: 768px) {
+  /* Keep date controls within the same width as the other form fields. */
+  #stage .kive-page #kiveDeadline,
+  #stage .kive-page #kivePortfolioDate {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    margin:0 !important;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+  #stage .kive-page .kive-form > .kive-field:not(.full) {
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="stage"></div>
@@ -1541,13 +1584,13 @@ body.painting #stage .kive-day *{pointer-events:none}body.painting #stage .kive-
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 원하는 분위기 및 디자인 요소
             </label>
-<div class="kive-longinput" onclick="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326';}" id="kiveMood" data-placeholder="원하는 분위기, 레퍼런스, 디자인 요소 등을 작성해 주세요." contenteditable="true" onfocus="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">원하는 분위기, 레퍼런스, 디자인 요소 등을 작성해 주세요.</div>
+<div class="kive-longinput" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" id="kiveMood" data-placeholder="원하는 분위기, 레퍼런스, 디자인 요소 등을 작성해 주세요." contenteditable="true" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">원하는 분위기, 레퍼런스, 디자인 요소 등을 작성해 주세요.</div>
 </div>
 <div class="kive-field full" style="flex:0 0 100%; min-width:0; box-sizing:border-box;">
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 들어갈 문구 및 내용
             </label>
-<div class="kive-longinput" onclick="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326';}" id="kiveText" data-placeholder="작업물에 들어갈 문구를 작성해 주세요." contenteditable="true" onfocus="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">작업물에 들어갈 문구를 작성해 주세요.</div>
+<div class="kive-longinput" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" id="kiveText" data-placeholder="작업물에 들어갈 문구를 작성해 주세요." contenteditable="true" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">작업물에 들어갈 문구를 작성해 주세요.</div>
 </div>
 <div class="kive-field full" style="flex:0 0 100%; min-width:0; box-sizing:border-box;">
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
@@ -1561,7 +1604,7 @@ body.painting #stage .kive-day *{pointer-events:none}body.painting #stage .kive-
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 양식 외 추가 요청 사항
             </label>
-<div class="kive-longinput" onclick="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326';}" id="kiveExtraRequest" data-placeholder="추가 요청 사항이 있다면 작성해 주세요." contenteditable="true" onfocus="if(this.innerText===this.getAttribute('data-placeholder')){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">추가 요청 사항이 있다면 작성해 주세요.</div>
+<div class="kive-longinput" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" id="kiveExtraRequest" data-placeholder="추가 요청 사항이 있다면 작성해 주세요." contenteditable="true" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:110px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">추가 요청 사항이 있다면 작성해 주세요.</div>
 </div>
 <div class="kive-field full" style="flex:0 0 100%; min-width:0; box-sizing:border-box;">
 <div class="kive-copy-area" style="margin-top:8px; padding-top:23px; border-top:1px solid #E8DDE1;">
