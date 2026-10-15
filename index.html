@@ -48,27 +48,7 @@ body.painting #stage .kive-day *{pointer-events:none}body.painting #stage .kive-
 #toast.show{opacity:1}
 </style>
 
-<style id="kive-desktop-font-adjustment">
-/* Desktop: improve readability of detailed content without changing mobile sizing or main headings. */
-@media (min-width: 769px) {
-  #stage .kive-page { font-size: 16px !important; }
-  #stage .kive-page .kive-notice-content,
-  #stage .kive-page .kive-notice-intro,
-  #stage .kive-page .kive-price-label,
-  #stage .kive-page .kive-price-note,
-  #stage .kive-page .kive-process-name,
-  #stage .kive-page .kive-guide-item,
-  #stage .kive-page .kive-label,
-  #stage .kive-page .kive-result-row,
-  #stage .kive-page .kive-portfolio-tab { font-size: 15px !important; }
-  #stage .kive-page .kive-price-number,
-  #stage .kive-page .kive-result-label { font-size: 16px !important; }
-  #stage .kive-page .kive-input,
-  #stage .kive-page .kive-longinput { font-size: 16px !important; }
-  #stage .kive-page .kive-day-num { font-size: 14px !important; }
-  #stage .kive-page .kive-week { font-size: 12px !important; }
-}
-</style>
+
 <style id="kive-mobile-form-fixes">
 @media (max-width: 768px) {
   /* Keep date controls within the same width as the other form fields. */
@@ -1521,19 +1501,19 @@ body.painting #stage .kive-day *{pointer-events:none}body.painting #stage .kive-
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 방송 닉네임
             </label>
-<input class="kive-input" id="kiveNickname" value="방송 닉네임을 입력해 주세요." data-placeholder="방송 닉네임을 입력해 주세요." onfocus="if(this.value===this.dataset.placeholder){this.value='';}" onblur="if(this.value.trim()===''){this.value=this.dataset.placeholder;}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#292326; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px;" type="text"/>
+<div class="kive-input kive-shortinput" id="kiveNickname" data-placeholder="방송 닉네임을 입력해 주세요." contenteditable="true" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">방송 닉네임을 입력해 주세요.</div>
 </div>
 <div class="kive-field" style="flex:1 1 260px; min-width:260px;">
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 방송 채널 주소
             </label>
-<input class="kive-input" id="kiveChannel" value="방송 채널 주소를 입력해 주세요." data-placeholder="방송 채널 주소를 입력해 주세요." onfocus="if(this.value===this.dataset.placeholder){this.value='';}" onblur="if(this.value.trim()===''){this.value=this.dataset.placeholder;}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#292326; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px;" type="text"/>
+<div class="kive-input kive-shortinput" id="kiveChannel" data-placeholder="방송 채널 주소를 입력해 주세요." contenteditable="true" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">방송 채널 주소를 입력해 주세요.</div>
 </div>
 <div class="kive-field" style="flex:1 1 260px; min-width:260px;">
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
                 신청 타입 종류
             </label>
-<input class="kive-input" id="kiveType" value="신청하실 작업물의 종류를 입력해 주세요." data-placeholder="신청하실 작업물의 종류를 입력해 주세요." onfocus="if(this.value===this.dataset.placeholder){this.value='';}" onblur="if(this.value.trim()===''){this.value=this.dataset.placeholder;}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#292326; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px;" type="text"/>
+<div class="kive-input kive-shortinput" id="kiveType" data-placeholder="신청하실 작업물의 종류를 입력해 주세요." contenteditable="true" onclick="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326';}" onfocus="if(this.innerText.trim()===this.getAttribute('data-placeholder').trim()){this.innerText='';this.style.color='#292326'}" onblur="if(!this.innerText.trim()){this.innerText=this.getAttribute('data-placeholder');this.style.color='#95858B'}" style="width:100%; box-sizing:border-box; border:1px solid #E8DDE1; border-radius:11px; background:#fff; padding:12px 14px; color:#95858B; font-family:inherit; font-size:13px; letter-spacing:-0.02em; outline:none; min-height:46px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere;">신청하실 작업물의 종류를 입력해 주세요.</div>
 </div>
 <div class="kive-field" style="flex:1 1 260px; min-width:260px;">
 <label class="kive-label" style="display:block; margin-bottom:8px; color:#3E3438; font-size:14px; font-weight:800;">
