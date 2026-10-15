@@ -44,5 +44,34 @@ async function putFile(path,content,message,encoding='utf-8'){
 function base64Unicode(s){const bytes=new TextEncoder().encode(s);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));return btoa(bin)}
 async function saveConfig(keys){if(!connected)throw Error('먼저 GitHub 저장소에 연결해 주세요.');if(keys.includes('schedule'))parseEditor('scheduleJson','schedule');if(keys.includes('notices')){cfg.noticesIntro=$('noticesIntro').value;parseEditor('noticesJson','notices')}if(keys.includes('prices'))parseEditor('pricesJson','prices');if(keys.includes('formLabels'))parseEditor('formJson','formLabels');const result=await putFile('site-data.json',base64Unicode(JSON.stringify(cfg,null,2)),'KIVE 사이트 설정 업데이트');sha=result.content&&result.content.sha;note('저장 완료! GitHub Pages 반영까지 1~2분 기다려 주세요.');}
 $('connect').onclick=connect;$('forget').onclick=()=>{$('token').value='';token='';connected=false;conn('토큰을 지웠습니다.')};document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='panel-'+b.dataset.tab))});document.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{try{note('저장 중…');await saveConfig([b.dataset.save])}catch(e){note('저장 실패: '+e.message)}});$('saveAll').onclick=async()=>{try{note('전체 저장 중…');await saveConfig(['schedule','notices','prices','formLabels'])}catch(e){note('저장 실패: '+e.message)}};
-$('uploadImages').onclick=async()=>{try{if(!connected)throw Error('먼저 GitHub 저장소에 연결해 주세요.');const files=[...$('images').files];if(!files.length)throw Error('업로드할 이미지를 선택해 주세요.');for(let i=0;i<files.length;i++){const f=files[i];if(f.size>7*1024*1024)throw Error(f.name+' 파일이 7MB를 넘습니다. 이미지 크기를 줄여 주세요.');const safeName=f.name.normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'')||('image-'+Date.now()+'.png');const path='portfolio/'+Date.now()+'-'+i+'-'+safeName;const data=await f.arrayBuffer();let bin='';new Uint8Array(data).forEach(b=>bin+=String.fromCharCode(b));await putFile(path,btoa(bin),'포트폴리오 이미지 추가: '+safeName);cfg.portfolio.push({category:$('uploadCategory').value,title:f.name.replace(/\.[^.]+$/,''),path:'./'+path});note('업로드 중… '+(i+1)+'/'+files.length)}renderPortfolio();await saveConfig([]);$('images').value='';note('이미지 업로드 및 설정 저장 완료!')}catch(e){note('업로드 실패: '+e.message)}};
+$('uploadImages').onclick=async()=>{
+  let uploadedPaths=[];
+  try{
+    if(!connected)throw Error('먼저 GitHub 저장소에 연결해 주세요.');
+    const files=[...$('images').files];
+    if(!files.length)throw Error('업로드할 이미지를 선택해 주세요.');
+    const btn=$('uploadImages');btn.disabled=true;
+    for(let i=0;i<files.length;i++){
+      const f=files[i];
+      if(f.size>7*1024*1024)throw Error(f.name+' 파일이 7MB를 넘습니다. 이미지 크기를 줄여 주세요.');
+      const safeName=f.name.normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'')||('image-'+Date.now()+'.png');
+      const path='portfolio/'+Date.now()+'-'+i+'-'+safeName;
+      note('이미지 파일 업로드 중… '+(i+1)+'/'+files.length+' ('+f.name+')');
+      const data=await f.arrayBuffer();let bin='';new Uint8Array(data).forEach(b=>bin+=String.fromCharCode(b));
+      await putFile(path,btoa(bin),'포트폴리오 이미지 추가: '+safeName);
+      const check=await getFile(path);
+      if(!check||!check.sha)throw Error(f.name+' 파일이 GitHub에서 확인되지 않습니다. 업로드를 완료하지 못했습니다.');
+      uploadedPaths.push(path);
+      cfg.portfolio.push({category:$('uploadCategory').value,title:f.name.replace(/\.[^.]+$/,''),path:'./'+path});
+    }
+    renderPortfolio();
+    note('이미지 파일 '+uploadedPaths.length+'개 저장 확인 완료. 목록(site-data.json) 저장 중…');
+    await saveConfig([]);
+    $('images').value='';
+    note('완료! 이미지 파일 '+uploadedPaths.length+'개와 포트폴리오 목록을 GitHub에 저장했어요. 파일 위치: portfolio/');
+  }catch(e){
+    const prefix=uploadedPaths.length?'이미지 파일 '+uploadedPaths.length+'개는 업로드됐지만 목록 저장/후속 단계에서 문제가 생겼습니다. ':'업로드 실패: ';
+    note(prefix+e.message+(uploadedPaths.length?'\n확인할 파일: '+uploadedPaths.join(', '):''));
+  }finally{$('uploadImages').disabled=false;}
+};
 </script></body></html>
